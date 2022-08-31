@@ -1,7 +1,7 @@
 'use strict';
 
 let imgContainer = document.getElementById('imgContainer');
-let resultButton = document.getElementById('resultButton');
+// let resultButton = document.getElementById('resultButton');
 let imgOne = document.getElementById('imgOne');
 let imgTwo = document.getElementById('imgTwo');
 let imgThree = document.getElementById('imgThree');
@@ -19,22 +19,32 @@ function Product(name, path) {
 
 Product.allProductsArray = [];
 
-console.log(Product.allProductsArray);
+//console.log(Product.allProductsArray);
 
-function getRandomNumber() {
+function genRandomNumber() {
   return Math.floor(Math.random() * Product.allProductsArray.length);
 }
 
+let imgIndexArray = [];
+
 function generateRandomPicture() {
-  // here, we are calling getRandomNumber to get a random number
-  let imgOneIndex = getRandomNumber();
-  let imgTwoIndex = getRandomNumber();
-  let imgThreeIndex = getRandomNumber();
+  // call the getRandomNumber
+  // I need to create a loop here to generate unique pictures.
+  while (imgIndexArray.length < 6) {
+    let random = genRandomNumber();
+    if (!imgIndexArray.includes(random)) {
+      imgIndexArray.push(random);
+    }
+  }
+
+  let imgOneIndex = imgIndexArray.shift();
+  let imgTwoIndex = imgIndexArray.shift();
+  let imgThreeIndex = imgIndexArray.shift();
 
   while (imgOneIndex === imgTwoIndex || imgOneIndex === imgThreeIndex || imgTwoIndex === imgThreeIndex) {
-    imgOneIndex = getRandomNumber();
-    imgTwoIndex = getRandomNumber();
-    imgThreeIndex = getRandomNumber();
+    imgOneIndex = genRandomNumber();
+    imgTwoIndex = genRandomNumber();
+    imgThreeIndex = genRandomNumber();
   }
   imgOne.src = Product.allProductsArray[imgOneIndex].path;
   imgOne.alt = Product.allProductsArray[imgOneIndex].name;
@@ -52,7 +62,7 @@ function generateRandomPicture() {
   Product.allProductsArray[imgThreeIndex].views++;
 }
 
-//These are the Event Handlers
+//Here are the event handlers
 function handleClick(event) {
   if (event.target === imgContainer) {
     alert('Please click on an image');
@@ -66,24 +76,77 @@ function handleClick(event) {
     }
   }
   if (clicks === maxClicksAllowed) {
-    alert('You have reached the maximum number of selections. Please select "View Results below."');
+    alert('Thank you for your input. See results below.');
     imgContainer.removeEventListener('click', handleClick);
-    // The user knows the button is active when you give the button an event lister and styles
-    resultButton.addEventListener('click', displayResults);
-    resultButton.className = 'clicks-allowed';
+    // resultButton.addEventListener('click', displayResults);
+    // resultButton.className = 'clicks-allowed';
     imgContainer.className = 'no-voting';
+    displayChart();
   } else {
     generateRandomPicture();
   }
 }
 
-function displayResults() {
-  let ul = document.getElementById('resultsList');
+// function displayResults() {
+//   let ul = document.getElementById('resultsList');
+//   for (let i = 0; i < Product.allProductsArray.length; i++) {
+//     let li = document.createElement('li');
+//     li.textContent = `${Product.allProductsArray[i].name} had ${Product.allProductsArray[i].views} views and was clicked ${Product.allProductsArray[i].clicks} times.`;
+//     ul.appendChild(li);
+//   }
+// }
+
+// chart.js
+
+function displayChart() {
+  let productNames = [];
+  let productClicks = [];
+  let productViews = [];
+
   for (let i = 0; i < Product.allProductsArray.length; i++) {
-    let li = document.createElement('li');
-    li.textContent = `${Product.allProductsArray[i].name} had ${Product.allProductsArray[i].views} views and was clicked ${Product.allProductsArray[i].clicks} times.`;
-    ul.appendChild(li);
+    productNames.push(Product.allProductsArray[i].name);
+    productClicks.push(Product.allProductsArray[i].clicks);
+    productViews.push(Product.allProductsArray[i].views);
   }
+
+  //this is the chart section
+  const chartGraphics = {
+    type: 'bar',
+    data: {
+      labels: productNames,
+      datasets: [{
+        label: 'Number of Votes',
+        data: productClicks,
+        backgroundColor: [
+          'green',
+        ],
+        borderColor: [
+          'purple'
+        ],
+        borderWidth: 3
+      },
+      {
+        label: 'Number of Views',
+        data: productViews,
+        backgroundColor: [
+          'purple'
+        ],
+        borderColor: [
+          'green'
+        ],
+        borderWidth: 3
+      }]
+    },
+    options: {
+      scales: {
+        y: {
+          beginAtZero: true
+        }
+      }
+    }
+  };
+  let canvasChart = document.getElementById('myChart').getContext('2d');
+  const myChart = new Chart(canvasChart, chartGraphics);
 }
 
 new Product('bag', './img/bag.jpg');
@@ -107,5 +170,4 @@ new Product('water-can', './img/water-can.jpg');
 new Product('wine-glass', './img/wine-glass.jpg');
 
 generateRandomPicture();
-
 imgContainer.addEventListener('click', handleClick);

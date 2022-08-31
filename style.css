@@ -1,5 +1,12 @@
 @import url('https://fonts.googleapis.com/css2?family=Oswald&display=swap');
 
+header {
+    height: 60px;
+    background-color: rgb(58, 194, 48);
+    text-align: center;
+    font-size: 25px;
+  }
+
 * {
     font-family: 'Oswald', sans-serif;
 }
@@ -8,12 +15,23 @@ img {
     height: 225px;
     width: 225px;
     border-radius: 10px;
+
 }
 
-button {
+/* button {
     margin-left: 50px;
     background-color: black;
     color:rgb(40, 220, 20)
+} */
+
+#imgContainer {
+    display: flex;
+    background-color: rgba(171, 27, 169, 0.601);
+    border: 2px solid rgb(96, 44, 201);
+    margin: 15px auto;
+    align-items: center;
+    justify-content: space-evenly;
+    height: 400px;
+    border-radius: 100px;
+    width: 1000px;
 }
-
-
