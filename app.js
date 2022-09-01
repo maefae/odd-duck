@@ -8,6 +8,7 @@ let imgThree = document.getElementById('imgThree');
 
 let clicks = 0;
 let maxClicksAllowed = 25;
+let clickCounter = 24;
 
 function Product(name, path) {
   this.name = name;
@@ -19,13 +20,17 @@ function Product(name, path) {
 
 Product.allProductsArray = [];
 
-//console.log(Product.allProductsArray);
-
 function genRandomNumber() {
   return Math.floor(Math.random() * Product.allProductsArray.length);
 }
 
 let imgIndexArray = [];
+
+// Click Counter
+// onClick called in HTML onclick
+function onClick() { 
+  document.getElementById('clicks').innerHTML = clickCounter;
+}
 
 function generateRandomPicture() {
   // call the generateRandomNumber
@@ -65,9 +70,10 @@ function generateRandomPicture() {
 //Here are the event handlers
 function handleClick(event) {
   if (event.target === imgContainer) {
-    alert('Please click on an image');
+    alert('Click on the image!');
   }
   clicks++;
+  clickCounter--;
   let clickImg = event.target.alt;
   for (let i = 0; i < Product.allProductsArray.length; i++) {
     if (clickImg === Product.allProductsArray[i].name) {
@@ -78,14 +84,13 @@ function handleClick(event) {
   if (clicks === maxClicksAllowed) {
     alert('Thank you for your input. See results below.');
     imgContainer.removeEventListener('click', handleClick);
-    // resultButton.addEventListener('click', displayResults);
-    // resultButton.className = 'clicks-allowed';
     imgContainer.className = 'no-voting';
     displayChart();
   } else {
+    const stringData = Product.allProductsArray;
+    localStorage.setItem('stringData', JSON.stringify(stringData));
     generateRandomPicture();
   }
-  addStorage();
 }
 
 // function displayResults() {
@@ -151,43 +156,43 @@ function displayChart() {
 }
 
 //Saving results to local storage
-function addStorage() {
-  let productsArrayJSON = JSON.stringify(productsArray);
-  console.log(productsArrayJSON)
-  window.localStorage.setItem('productsArrayString', productsArrayJSON);
-}
 
 function loadStorage() {
-  let productsArrayValue = window.localStorage.getItem('productsArrayString');
+  let productsArrayValue = localStorage.getItem('productsArrayString');
   if (productsArrayValue !== null) {
-    productsArray = JSON.parse(productsArrayValue);
+    Product.allProductsArray = JSON.parse(productsArrayValue);
+  } else {
+    new Product('bag', './img/bag.jpg');
+    new Product('banana', './img/banana.jpg');
+    new Product('bathroom', './img/bathroom.jpg');
+    new Product('boots', './img/boots.jpg');
+    new Product('breakfast', './img/breakfast.jpg');
+    new Product('bubblegum', './img/bubblegum.jpg');
+    new Product('chair', './img/chair.jpg');
+    new Product('cthulhu', './img/cthulhu.jpg');
+    new Product('dog-duck', './img/dog-duck.jpg');
+    new Product('dragon', './img/dragon.jpg');
+    new Product('pen', './img/pen.jpg');
+    new Product('pet-sweep', './img/pet-sweep.jpg');
+    new Product('scissors', './img/scissors.jpg');
+    new Product('shark', './img/shark.jpg');
+    new Product('sweep', './img/sweep.png');
+    new Product('tauntaun', './img/tauntaun.jpg');
+    new Product('unicorn', './img/unicorn.jpg');
+    new Product('water-can', './img/water-can.jpg');
+    new Product('wine-glass', './img/wine-glass.jpg');
   }
 }
 loadStorage();
 console.log(loadStorage);
 
-let productsArray = [
-  new Product('bag', './img/bag.jpg'),
-  new Product('banana', './img/banana.jpg'),
-  new Product('bathroom', './img/bathroom.jpg'),
-  new Product('boots', './img/boots.jpg'),
-  new Product('breakfast', './img/breakfast.jpg'),
-  new Product('bubblegum', './img/bubblegum.jpg'),
-  new Product('chair', './img/chair.jpg'),
-  new Product('cthulhu', './img/cthulhu.jpg'),
-  new Product('dog-duck', './img/dog-duck.jpg'),
-  new Product('dragon', './img/dragon.jpg'),
-  new Product('pen', './img/pen.jpg'),
-  new Product('pet-sweep', './img/pet-sweep.jpg'),
-  new Product('scissors', './img/scissors.jpg'),
-  new Product('shark', './img/shark.jpg'),
-  new Product('sweep', './img/sweep.png'),
-  new Product('tauntaun', './img/tauntaun.jpg'),
-  new Product('unicorn', './img/unicorn.jpg'),
-  new Product('water-can', './img/water-can.jpg'),
-  new Product('wine-glass', './img/wine-glass.jpg'),
-];
+// const storedProducts = localStorage.getItem('stringData');
+// if (storedProducts) {
+//   Product.allProductsArray = JSON.parse(storedProducts);
+// }
+// console.log(storedProducts);
 
+
+// console.log(loadProducts);
 generateRandomPicture();
 imgContainer.addEventListener('click', handleClick);
-

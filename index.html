@@ -7,14 +7,17 @@
 </head>
 <body>
   <header>
-    <h2>Odd Duck Products</h2> 
+    <h2>Odd Duck Products Survey</h2> 
     <p>Select the product you would most likely buy</p>
   </header>
     <main>
+      <div id="clicksContainer">
+        <p class="pClicks">Clicks Remaining: <a id="clicks">25</a></p>
+      </div>
       <section id="imgContainer">
-        <img id="imgOne" src="" alt="" title="" class="img">
-        <img id="imgTwo" src="" alt="" title="" class="img">
-        <img id="imgThree" src="" alt="" title="" class="img">
+        <img id="imgOne" onClick="onClick()" src="" alt="" title="" class="img">
+        <img id="imgTwo" onClick="onClick()" src="" alt="" title="" class="img">
+        <img id="imgThree" onClick="onClick()" src="" alt="" title="" class="img">
       </section>
       <!-- <div>
         <button type="button" id="resultButton">View Results</button>
