@@ -1,7 +1,6 @@
 'use strict';
 
 let imgContainer = document.getElementById('imgContainer');
-// let resultButton = document.getElementById('resultButton');
 let imgOne = document.getElementById('imgOne');
 let imgTwo = document.getElementById('imgTwo');
 let imgThree = document.getElementById('imgThree');
@@ -10,6 +9,7 @@ let clicks = 0;
 let maxClicksAllowed = 25;
 let clickCounter = 24;
 
+//constructor function 
 function Product(name, path) {
   this.name = name;
   this.path = path;
@@ -33,8 +33,7 @@ function onClick() {
 }
 
 function generateRandomPicture() {
-  // call the generateRandomNumber
-  // The loop here will generate unique pictures.
+  // call the generateRandomNumber and the loop will genderate random pictures
   while (imgIndexArray.length < 6) {
     let random = genRandomNumber();
     if (!imgIndexArray.includes(random)) {
@@ -92,17 +91,6 @@ function handleClick(event) {
     generateRandomPicture();
   }
 }
-
-// function displayResults() {
-//   let ul = document.getElementById('resultsList');
-//   for (let i = 0; i < Product.allProductsArray.length; i++) {
-//     let li = document.createElement('li');
-//     li.textContent = `${Product.allProductsArray[i].name} had ${Product.allProductsArray[i].views} views and was clicked ${Product.allProductsArray[i].clicks} times.`;
-//     ul.appendChild(li);
-//   }
-// }
-
-// chart.js
 
 function displayChart() {
   let productNames = [];
